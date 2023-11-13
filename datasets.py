@@ -19,11 +19,15 @@ class Hinet_Dataset(Dataset):
         self.mode = mode
         if mode == 'train':
             # train
+            # glob.glob to get all the files absoulate path
             self.files = natsorted(sorted(glob.glob(c.TRAIN_PATH + "/*." + c.format_train)))
         else:
             # test
+            # glob.glob to get all the files absoulate path
+
             self.files = sorted(glob.glob(c.VAL_PATH + "/*." + c.format_val))
 
+    # get a image item
     def __getitem__(self, index):
         try:
             image = Image.open(self.files[index])
@@ -55,13 +59,15 @@ transform_val = T.Compose([
 ])
 
 
+
 # Training data loader
 trainloader = DataLoader(
     Hinet_Dataset(transforms_=transform, mode="train"),
     batch_size=c.batch_size,
-    shuffle=True,
+    shuffle=False ,
     pin_memory=True,
     num_workers=8,
+
     drop_last=True
 )
 # Test data loader
@@ -73,3 +79,4 @@ testloader = DataLoader(
     num_workers=1,
     drop_last=True
 )
+# print(len(testloader))
